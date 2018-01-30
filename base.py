@@ -35,7 +35,7 @@ def get_max_id_for_location(location):
 def store_travel_tweets_from_location(coordinates, geotag):
     try:
         max_id = get_max_id_for_location(geotag)
-        item_count = 10000
+        item_count = 5
         if max_id is None:
             travelTweets = tweepy.Cursor(api.search, q='ttot', geocode=coordinates).items(item_count)
         else:
@@ -59,4 +59,5 @@ if __name__ == '__main__':
     api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
     create_table_if_not_exists()
     TweetInfo.init_connection_to_db(DBNAME)
-    store_travel_tweets_from_location("40.7128,-74.0060,20km", "NYC")
+    for tup in [("40.7128,-74.0060,20km", "NYC"),("4.7128,-7.0060,20km", "LA"),("80.7128,-4.0060,20km", "ORLANDO")]:
+        store_travel_tweets_from_location(tup[0], tup[1])
